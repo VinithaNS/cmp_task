@@ -29,7 +29,7 @@ function Characters() {
       <div className="container" style={{ minHeight: "100%" }}>
         <div className="row">
           <div className="company-header">
-            <div className="col-md-6">
+            <div className="col-md-12">
               <h1>Star Wars People</h1>
               <table class="table table-bordered border-primary">
                 <thead>
