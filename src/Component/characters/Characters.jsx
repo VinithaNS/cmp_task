@@ -9,7 +9,7 @@ function Characters() {
     //     .then(data=>setData(data))
     // })
      const [people, setPeople] = useState([]);
-     const [currentPage, setCurrentPage] = useState(1);
+     const [currentPage] = useState(1);
 
      useEffect(() => {
        fetchPeople(currentPage).then((data) => setPeople(data.results));
