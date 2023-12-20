@@ -1,29 +1,35 @@
 import React, { useState, useEffect } from "react";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { Link, useNavigate,useParams } from "react-router-dom";
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 function Characters() {
-    // const [ data, setData ] = useState([]);
-    // console.log('data',data)
-    // useEffect(() => {
-    //     fetch('https://swapi.dev/api/people/')
-    //         .then(response => response.json())
-    //     .then(data=>setData(data))
-    // })
-     const [people, setPeople] = useState([]);
-     const [currentPage] = useState(1);
+  const [ people, setPeople ] = useState([]);
+  console.log('people',people)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ pageSize ] = useState(2);
+  const { name } = useParams();
+  console.log('name',name)// Set the number of rows per page
+ const navigate=useNavigate()
+  useEffect(() => {
+    fetchPeople(currentPage).then((data) => setPeople(data.results));
+  }, [currentPage]);
 
-     useEffect(() => {
-       fetchPeople(currentPage).then((data) => setPeople(data.results));
-     }, [currentPage]);
+  const fetchPeople = async (page) => {
+    const response = await fetch(`https://swapi.dev/api/people/?page=${page}`);
+    const data = await response.json();
+    return data;
+  };
 
-     const fetchPeople = async (page) => {
-       const response = await fetch(
-         `https://swapi.dev/api/people/?page=${page}`
-       );
-       const data = await response.json();
-       return data;
-     };
-   
-  
+  const handlePageChange = (direction) => {
+    setCurrentPage((prevPage) =>
+      direction === "prev" ? prevPage - 1 : prevPage + 1
+    );
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+
   return (
     <>
       <div className="container" style={{ minHeight: "100%" }}>
@@ -31,42 +37,49 @@ function Characters() {
           <div className="company-header">
             <div className="col-md-12">
               <h1>Star Wars People</h1>
-              <table class="table table-bordered border-primary">
+              <table className="table table-bordered border-primary">
                 <thead>
                   <tr>
                     <th>S.NO</th>
                     <th>Name</th>
                     <th>Height</th>
-                    <th>Hair Color</th>
-                    <th>Weight</th>
-                    <th>Skin Color</th>
-                    <th>Eye Color</th>
-                   </tr>
+                    <th>Action</th>
+                  </tr>
                 </thead>
                 <tbody>
-                  {people.map((person, index) => (
-                    <tr>
-                      <th>{index + 1}</th>
+                  {people.slice(startIndex, endIndex).map((person, index) => (
+                    <tr key={index}>
+                      <th>{startIndex + index + 1}</th>
                       <td>{person.name}</td>
                       <td>{person.height}</td>
-                      <td>{person.hair_color}</td>
-                      <td>{person.mass}</td>
-                      <td>{person.skin_color}</td>
-                      <td>{person.eye_color}</td>
-                      </tr>
+                      <td>
+                        <div>
+                          <Link to={`https://swapi.dev/api/people/${index+1}`}>
+                            <VisibilityIcon />
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
+              <br />
+              <button
+                onClick={() => handlePageChange("prev")}
+                disabled={currentPage === 1}
+              >
+                <ArrowBackIosNewOutlinedIcon />
+              </button>
+              <span>Page {currentPage}</span>
+              <button onClick={() => handlePageChange("next")}>
+                <ArrowForwardIosOutlinedIcon />
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <br />
-      {/* <button onClick={() => handlePageChange("prev")}>Previous</button>
-        <span>Page {currentPage}</span>
-        <button onClick={() => handlePageChange("next")}>Next</button> */}
     </>
   );
 }
 
-export default Characters
+export default Characters;
