@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Link, useNavigate,useParams } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 function Characters() {
@@ -10,7 +10,7 @@ function Characters() {
   const [ pageSize ] = useState(2);
   const { name } = useParams();
   console.log('name',name)// Set the number of rows per page
- const navigate=useNavigate()
+//  const navigate=useNavigate()
   useEffect(() => {
     fetchPeople(currentPage).then((data) => setPeople(data.results));
   }, [currentPage]);

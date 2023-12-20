@@ -3,9 +3,9 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 // import { useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 const MainBar = () => {
-const { name } = useParams();
+// const { name } = useParams();
 
   return (
     <>
